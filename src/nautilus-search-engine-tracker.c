@@ -55,6 +55,8 @@ enum
     LAST_PROP
 };
 
+#define TRACKER_MINER_FS_BUSNAME "org.freedesktop.Tracker3.Miner.Files"
+
 static void nautilus_search_provider_init (NautilusSearchProviderInterface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (NautilusSearchEngineTracker,
@@ -349,7 +351,7 @@ nautilus_search_engine_tracker_start (NautilusSearchProvider *provider)
                      "  ?urn a nfo:FileDataObject;"
                      "  nfo:fileLastModified ?mtime;"
                      "  nfo:fileLastAccessed ?atime;"
-                     "  tracker:available true;"
+                     "  nie:dataSource/tracker:available true;"
                      "  nie:url ?url");
 
     if (mimetypes->len > 0)
@@ -558,7 +560,7 @@ nautilus_search_engine_tracker_init (NautilusSearchEngineTracker *engine)
 
     engine->hits_pending = g_queue_new ();
 
-    engine->connection = tracker_sparql_connection_get (NULL, &error);
+    engine->connection = tracker_sparql_connection_bus_new (TRACKER_MINER_FS_BUSNAME, NULL, NULL, &error);
 
     if (error)
     {
