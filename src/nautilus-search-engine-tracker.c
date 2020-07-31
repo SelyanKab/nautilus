@@ -346,6 +346,13 @@ nautilus_search_engine_tracker_start (NautilusSearchProvider *provider)
         g_string_append (sparql, " fts:snippet(?urn)");
     }
 
+    g_string_append (sparql, "FROM tracker:FileSystem ");
+
+    if (tracker->fts_enabled)
+    {
+        g_string_append (sparql, "FROM tracker:Documents ");
+    }
+
     g_string_append (sparql,
                      "\nWHERE {"
                      "  ?urn a nfo:FileDataObject;"
