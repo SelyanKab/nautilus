@@ -23,6 +23,9 @@ finish-args:
 - "--env=DCONF_USER_CONFIG_DIR=.config/dconf"
 # Access to host Tracker Miners
 - "--add-policy=Tracker3.dbus:org.freedesktop.Tracker3.Miner.Files=tracker:FileSystem;tracker:Documents"
+# Internal Tracker Miners, for when host doesn't have a suitable filesystem indexer
+- "--own-name=org.gnome.Nautilus.Tracker3.Miner.Files"
+- "--own-name=org.gnome.Nautilus.Tracker3.Miner.Extract"
 modules:
 - name: exiv2
   config-opts:

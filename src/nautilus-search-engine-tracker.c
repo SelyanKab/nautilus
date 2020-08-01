@@ -25,6 +25,7 @@
 #include "nautilus-search-engine-private.h"
 #include "nautilus-search-hit.h"
 #include "nautilus-search-provider.h"
+#include "nautilus-tracker-utilities.h"
 #define DEBUG_FLAG NAUTILUS_DEBUG_SEARCH
 #include "nautilus-debug.h"
 
@@ -54,8 +55,6 @@ enum
     PROP_RUNNING,
     LAST_PROP
 };
-
-#define TRACKER_MINER_FS_BUSNAME "org.freedesktop.Tracker3.Miner.Files"
 
 static void nautilus_search_provider_init (NautilusSearchProviderInterface *iface);
 
@@ -567,8 +566,7 @@ nautilus_search_engine_tracker_init (NautilusSearchEngineTracker *engine)
 
     engine->hits_pending = g_queue_new ();
 
-    engine->connection = tracker_sparql_connection_bus_new (TRACKER_MINER_FS_BUSNAME, NULL, NULL, &error);
-
+    engine->connection = nautilus_tracker_get_miner_fs_connection (&error);
     if (error)
     {
         g_warning ("Could not establish a connection to Tracker: %s", error->message);
